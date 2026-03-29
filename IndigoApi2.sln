@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndigoApi2", "IndigoApi2\IndigoApi2.csproj", "{E697BD1E-6028-475C-83A3-0897367F8DD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E697BD1E-6028-475C-83A3-0897367F8DD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E697BD1E-6028-475C-83A3-0897367F8DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E697BD1E-6028-475C-83A3-0897367F8DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E697BD1E-6028-475C-83A3-0897367F8DD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
