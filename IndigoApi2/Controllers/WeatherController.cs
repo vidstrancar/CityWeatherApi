@@ -1,3 +1,4 @@
+using IndigoApi2.DTOs;
 using IndigoApi2.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,5 +41,23 @@ public class WeatherController : ControllerBase
         // Fire and forget or await depending on your UI needs
         _ = Task.Run(() => _service.ProcessDataAsync());
         return Accepted("Recalculation started...");
+    }
+    
+    [HttpPost("create weather entry")]
+    public async Task<IActionResult> Post([FromBody] CreateWeatherEntry entry)
+    {
+        if (string.IsNullOrWhiteSpace(entry.City))
+            return BadRequest("City name is required.");
+        
+        if (entry.City.Contains(';')) 
+            return BadRequest("City name cannot contain semicolons.");
+
+        await _service.AddEntryAsync(entry);
+    
+        // Return the updated stats for that specific city
+        return CreatedAtAction(
+            nameof(GetCity), 
+            new { city = entry.City }, 
+            _service.GetByCity(entry.City));
     }
 }
