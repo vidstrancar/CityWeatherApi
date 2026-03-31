@@ -1,4 +1,5 @@
 using IndigoApi2.Configuration;
+using IndigoApi2.Middleware;
 using IndigoApi2.Services;
 using Scalar.AspNetCore;
 
@@ -39,6 +40,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ApiKeyMiddleware>();
 app.MapControllers();
 
 app.Run();

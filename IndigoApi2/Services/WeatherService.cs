@@ -15,22 +15,14 @@ public class WeatherService(IOptions<WeatherOptions> options)
 
     public async Task ProcessDataAsync()
     {
-        Console.WriteLine("Processing data...");
+        Console.WriteLine($"Processing data: {_filePath}");
         
         var newStats = new ConcurrentDictionary<string, CityStats>();
 
         // Use a StreamReader to process the file line-by-line
         using var reader = new StreamReader(_filePath);
-        var lineNum = 0;
-        Console.WriteLine($"Processing file {_filePath}");
         while (await reader.ReadLineAsync() is { } line)
         {
-            lineNum += 1;
-
-            if (lineNum % 1000 == 0)
-            {
-                Console.WriteLine($"Processed {lineNum} lines");
-            }
             
             var parts = line.Split(';');
             if (parts.Length < 3) continue;
@@ -52,6 +44,8 @@ public class WeatherService(IOptions<WeatherOptions> options)
                 });
         }
         _cache = newStats; // Atomic swap of the "cache"
+        
+        Console.WriteLine($"Finished processing data");
     }
 
     public IEnumerable<CityStats> GetAll() => _cache.Values;
