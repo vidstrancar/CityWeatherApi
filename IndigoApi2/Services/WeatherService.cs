@@ -80,5 +80,5 @@ public class WeatherService(IOptions<WeatherOptions> options)
     }
 
     public IEnumerable<CityStats> GetAll() => _cache.Values;
-    public CityStats? GetByCity(string city) => _cache.TryGetValue(city, out var stats) ? stats : null;
+    public CityStats? GetByCity(string city) => _cache.GetValueOrDefault(city);
 }

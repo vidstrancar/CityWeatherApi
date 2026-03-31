@@ -1,4 +1,5 @@
 using IndigoApi2.DTOs;
+using IndigoApi2.Models;
 using IndigoApi2.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +16,17 @@ public class WeatherController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(_service.GetAll());
+        var result = _service.GetAll().Select(MapToDto).ToList();
+        return Ok(result);
     }
 
     [HttpGet("{city}")]
     public IActionResult GetCity(string city) 
     {
-        var result = _service.GetByCity(city);
-        return result != null ? Ok(result) : NotFound();
+        var stats = _service.GetByCity(city);
+        if (stats == null) return NotFound();
+
+        return Ok(MapToDto(stats));
     }
 
     [HttpGet("filter")]
@@ -32,8 +36,18 @@ public class WeatherController : ControllerBase
         if (minAvg.HasValue) query = query.Where(c => c.Average >= minAvg.Value);
         if (maxAvg.HasValue) query = query.Where(c => c.Average <= maxAvg.Value);
         
-        return Ok(query.ToList());
+        var results = query.Select(MapToDto).ToList();
+        
+        return Ok(results);
     }
+    
+    private static CityWeatherResponse MapToDto(CityStats stats) => new()
+    {
+        City = stats.City,
+        Min = stats.Min,
+        Max = stats.Max,
+        Average = stats.Average
+    };
 
     [HttpPost("recalculate")]
     public async Task<IActionResult> Recalculate()
