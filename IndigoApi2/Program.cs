@@ -1,3 +1,4 @@
+using IndigoApi2.Configuration;
 using IndigoApi2.Services;
 using Scalar.AspNetCore;
 
@@ -10,10 +11,24 @@ builder.Services.AddOpenApi();
 builder.Services.AddSingleton<WeatherService>();
 builder.Services.AddControllers();
 
+builder.Services.Configure<WeatherOptions>(
+    builder.Configuration.GetSection(WeatherOptions.SectionName));
+
 var app = builder.Build();
 
 var weatherService = app.Services.GetRequiredService<WeatherService>();
-_ = Task.Run(() => weatherService.ProcessDataAsync());
+_ = Task.Run(async () => 
+{
+    try 
+    {
+        await weatherService.ProcessDataAsync();
+    }
+    catch (Exception ex) 
+    {
+        // This will catch path errors, null options, etc.
+        Console.WriteLine($"FATAL ERROR in Background Task: {ex.Message}");
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

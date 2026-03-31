@@ -1,22 +1,28 @@
+using IndigoApi2.Configuration;
 using IndigoApi2.Models;
+using Microsoft.Extensions.Options;
 
 namespace IndigoApi2.Services;
 
 using System.Collections.Concurrent;
 using System.Globalization;
 
-public class WeatherService
+public class WeatherService(IOptions<WeatherOptions> options)
 {
     private ConcurrentDictionary<string, CityStats> _cache = new();
-    private readonly string _filePath = "Data/testMeasurements.csv";
+    private readonly string _filePath = options.Value.MeasurementFilePath ?? 
+                                        throw new ArgumentNullException(nameof(options));
 
     public async Task ProcessDataAsync()
     {
+        Console.WriteLine("Processing data...");
+        
         var newStats = new ConcurrentDictionary<string, CityStats>();
 
         // Use a StreamReader to process the file line-by-line
         using var reader = new StreamReader(_filePath);
         var lineNum = 0;
+        Console.WriteLine($"Processing file {_filePath}");
         while (await reader.ReadLineAsync() is { } line)
         {
             lineNum += 1;
