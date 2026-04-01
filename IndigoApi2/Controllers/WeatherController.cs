@@ -57,7 +57,7 @@ public class WeatherController : ControllerBase
         return Accepted("Recalculation started...");
     }
     
-    [HttpPost("create weather entry")]
+    [HttpPost("newEntry")]
     public async Task<IActionResult> Post([FromBody] CreateWeatherEntry entry)
     {
         if (string.IsNullOrWhiteSpace(entry.City))
