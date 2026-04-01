@@ -3,11 +3,15 @@
 ## Getting Started
 
 1. **Clone the repository.**
-2. **Run the application:**
+2. **Enter the repository folder:**
+   ```bash
+   cd IndigoApi2
+   ```
+3. **Run the application:**
    ```bash
    dotnet run --project IndigoApi2
    ```
-3. **Access the API Reference:** Navigate to `http://localhost:5269/scalar/` in your browser (only available in Development mode).
+4. **Access the API Reference:** Navigate to `http://localhost:5269/scalar/` in your browser (only available in Development mode).
 
 If you are unable to connect, check `IndigoApi2/Properties/launchSettings.json` to verify the configured ports for your local environment.
 
@@ -20,7 +24,8 @@ All endpoints (except documentation) require the `ApiKey` header by default.
   - **Note:** The city name is case-sensitive and must start with a capital letter (e.g., `Zagreb`).
 - **`GET /api/Weather/filter?minAvg=X&maxAvg=Y`**: Filter cities by their average temperature.
 - **`POST /api/Weather/recalculate`**: Manually trigger a full re-processing of the CSV file.
-- **`POST /api/Weather/newWeatherEntry`**: Add a new measurement entry.
+- **`POST /api/Weather/newEntry`**: Add a new measurement entry.
+  - **Note:** The cache is updated incrementally; you **do not** need to call `recalculate` after adding a new entry.
   - **Body Format (JSON):**
     ```json
     {
