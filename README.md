@@ -25,7 +25,7 @@ All endpoints (except documentation) require the `ApiKey` header by default.
 - **`GET /api/Weather/filter?minAvg=X&maxAvg=Y`**: Filter cities by their average temperature.
 - **`POST /api/Weather/recalculate`**: Manually trigger a full re-processing of the CSV file.
 - **`POST /api/Weather/newEntry`**: Add a new measurement entry.
-  - **Note:** The cache is updated incrementally; you **do not** need to call `recalculate` after adding a new entry.
+  - **Note:** The new entry is automatically appended to the CSV file and the cache is updated incrementally; you **do not** need to call `recalculate` after adding a new entry.
   - **Body Format (JSON):**
     ```json
     {
