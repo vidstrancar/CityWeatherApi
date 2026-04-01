@@ -40,14 +40,6 @@ public class WeatherController : ControllerBase
         
         return Ok(results);
     }
-    
-    private static CityWeatherResponse MapToDto(CityStats stats) => new()
-    {
-        City = stats.City,
-        Min = stats.Min,
-        Max = stats.Max,
-        Average = stats.Average
-    };
 
     [HttpPost("recalculate")]
     public async Task<IActionResult> Recalculate()
@@ -67,11 +59,21 @@ public class WeatherController : ControllerBase
             return BadRequest("City name cannot contain semicolons.");
 
         await _service.AddEntryAsync(entry);
-    
+
+        var updatedStats = _service.GetByCity(entry.City);
+        
         // Return the updated stats for that specific city
         return CreatedAtAction(
             nameof(GetCity), 
             new { city = entry.City }, 
-            _service.GetByCity(entry.City));
+            MapToDto(updatedStats!));
     }
+    
+    private static CityWeatherResponse MapToDto(CityStats stats) => new()
+    {
+        City = stats.City,
+        Min = stats.Min,
+        Max = stats.Max,
+        Average = stats.Average
+    };
 }
